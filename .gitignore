@@ -1,0 +1,4 @@
+security.log
+baseline.json
+__pycache__/
+*.pyc 
