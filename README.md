@@ -1,124 +1,217 @@
-FILE INTEGRITY MONITOR  
-Version 1.0
+# File Integrity Monitor
 
-PROJECT OVERVIEW
+A Python-based cybersecurity application that detects unauthorized or unexpected changes to files using **SHA-256 hashing**, **real-time file monitoring**, and a **Tkinter graphical dashboard**.
 
-The File Integrity Monitor is a Python-based cybersecurity application designed to detect unauthorized or unexpected changes to files. The system uses SHA-256 cryptographic hashing to create a trusted baseline of monitored files and can compare the current state of those files against the baseline.
+## Overview
 
-The project also includes real-time file system monitoring using the Watchdog library and a graphical user interface built with Tkinter.
+The File Integrity Monitor was developed as an individual cybersecurity project to demonstrate how file integrity monitoring can be used to identify suspicious changes to files.
 
-The purpose of the application is to demonstrate how file integrity monitoring can be used as part of a defense-in-depth security strategy.
+The application creates a trusted baseline of monitored files using SHA-256 hashes and compares the current state of those files against the baseline. It also uses the Python Watchdog library to detect file system activity in real time.
 
-MAIN FEATURES
+The completed system can detect when files are added, modified, deleted, renamed, or moved inside the monitored directory.
 
-The File Integrity Monitor includes SHA-256 baseline creation, manual integrity scanning, real-time file monitoring, persistent security event logging, live event counters, duplicate-event filtering, and a graphical security dashboard.
+## Features
 
-The system can detect when files are added, modified, deleted, moved, or renamed inside the monitored directory.
+- SHA-256 trusted baseline creation
+- Manual file integrity scanning
+- Real-time file system monitoring
+- Detection of added files
+- Detection of modified files
+- Detection of deleted files
+- Detection of renamed or moved files
+- Persistent security event logging
+- Duplicate-event filtering
+- Live file and event counters
+- Color-coded security alerts
+- Tkinter graphical user interface
+- Start and stop monitoring controls
+- Direct access to the monitored directory and security log
 
-REQUIREMENTS
+## Technologies Used
 
-Python 3
+- **Python 3**
+- **Tkinter** for the graphical interface
+- **Watchdog** for real-time file system monitoring
+- **hashlib** for SHA-256 hashing
+- **JSON** for baseline storage
+- **pathlib** for file and directory handling
 
-Python Watchdog library
+## Requirements
 
-Tkinter
+Python 3 must be installed.
 
-Watchdog can be installed using the following command:
+Install the Watchdog dependency with:
 
+```bash
 py -m pip install watchdog
+```
+
+The project was developed using:
+
+```text
+watchdog==6.0.0
+```
 
 Tkinter is included with most standard Python installations.
 
-HOW TO RUN THE PROGRAM
+## Running the Application
 
-Open a terminal in the FileIntegrityMonitor project folder.
+Open a terminal inside the project directory and run:
 
-Run the following command:
-
+```bash
 py fim_gui.py
+```
 
-The File Integrity Monitor graphical interface should open.
+The File Integrity Monitor dashboard should open.
 
-PROJECT FILES
+## Project Structure
 
-fim_gui.py
+```text
+Abbott_Project_FileIntegrityMonitor/
+│
+├── fim_gui.py
+├── README.md
+├── requirements.txt
+├── .gitignore
+│
+├── monitored_files/
+│   └── Sample files used for monitoring and testing
+│
+└── Figures/
+    ├── File Integrity Monitor dashboard screenshot
+    └── System architecture diagram
+```
 
-This is the main application. It contains the graphical interface, SHA-256 hashing functions, baseline comparison logic, Watchdog monitoring, event handling, and logging functions.
+### Main Files
 
-baseline.json
+**`fim_gui.py`**  
+Contains the main File Integrity Monitor application, including the graphical interface, hashing functions, integrity scanning, Watchdog monitoring, event handling, and logging.
 
-This file stores the trusted SHA-256 hash values of files inside the monitored directory.
+**`requirements.txt`**  
+Lists the external Python dependency required by the project.
 
-security.log
+**`monitored_files/`**  
+Contains the files monitored by the application.
 
-This file stores timestamped security events detected by the application.
+**`Figures/`**  
+Contains screenshots and diagrams documenting the completed project.
 
-monitored_files/
+The application generates additional files during normal use, including the trusted baseline and security event log.
 
-This folder contains the files that are being monitored for integrity changes.
+## How the System Works
 
-backups/
+The application uses two complementary methods of file monitoring.
 
-This folder contains earlier development versions of the project.
+### SHA-256 Integrity Verification
 
-USING THE APPLICATION
+When the user selects **Create Baseline**, the program scans the monitored directory and calculates a SHA-256 hash for each file. These values represent the trusted state of the files.
 
-When the application opens, the user can create a trusted baseline using the Create Baseline button.
+When **Scan Now** is selected, the application calculates the current hashes and compares them against the baseline.
 
-The Scan Now button performs a manual file integrity scan and compares the current files against the trusted SHA-256 baseline.
+A different hash indicates that a file has been modified. The program also compares filenames to identify newly added or deleted files.
 
-The Start Monitoring button activates real-time file monitoring. While monitoring is active, changes inside the monitored_files directory are detected immediately.
+### Real-Time Monitoring
 
-The Stop Monitoring button stops real-time monitoring.
+When **Start Monitoring** is selected, Watchdog begins observing the monitored directory.
 
-The Open Monitored Folder button opens the monitored directory so that files can be viewed or tested.
+The system can immediately detect:
 
-The Open Security Log button opens the persistent security event log.
+```text
+ADDED
+MODIFIED
+DELETED
+MOVED
+```
 
-The Clear Event Display button clears the current live event display without deleting the saved security log.
+Detected events are displayed in the graphical dashboard and recorded in the security log.
 
-EVENT TYPES
+## Graphical Dashboard
 
-ADDED indicates that a new file was created inside the monitored directory.
+The Tkinter dashboard provides controls for:
 
-MODIFIED indicates that the contents of an existing file changed.
+- Creating a trusted baseline
+- Running a manual integrity scan
+- Starting real-time monitoring
+- Stopping real-time monitoring
+- Opening the monitored directory
+- Opening the security event log
+- Clearing the live event display
 
-DELETED indicates that a file was removed from the monitored directory.
+The dashboard also displays the current monitoring status, number of monitored files, number of baseline files, and number of detected security events.
 
-MOVED indicates that a file was renamed or moved.
+## Event Types
 
-SYSTEM indicates an application-related event such as monitoring being started or stopped.
+| Event | Description |
+|---|---|
+| `ADDED` | A new file was created |
+| `MODIFIED` | The contents of an existing file changed |
+| `DELETED` | A file was removed |
+| `MOVED` | A file was renamed or moved |
+| `SYSTEM` | Monitoring was started or stopped |
+| `BASELINE` | A trusted baseline was created |
+| `SCAN` | A manual integrity scan was completed |
 
-BASELINE indicates that a new trusted baseline was created.
+The live dashboard uses different colors to make event types easier to identify.
 
-SCAN indicates the result of a manual integrity scan.
+## Basic Demonstration
 
-BASIC DEMONSTRATION
+A typical demonstration of the project follows this sequence:
 
-To demonstrate the application, first place several test files inside the monitored_files directory.
+1. Place several test files inside `monitored_files`.
+2. Launch the application.
+3. Select **Create Baseline**.
+4. Run **Scan Now** and confirm that no integrity violations are detected.
+5. Select **Start Monitoring**.
+6. Modify a trusted file and observe the `MODIFIED` event.
+7. Create a new file and observe the `ADDED` event.
+8. Rename the new file and observe the `MOVED` event.
+9. Delete a trusted file and observe the `DELETED` event.
+10. Run **Scan Now** again to compare the current files against the trusted SHA-256 baseline.
+11. Open the security log to review the recorded events.
+12. Select **Stop Monitoring**.
 
-Create a baseline using the Create Baseline button.
+## Testing
 
-Run Scan Now to verify that no integrity violations are present.
+Version 1.0 was successfully tested for:
 
-Start real-time monitoring.
+- Baseline creation
+- Clean integrity scanning
+- SHA-256 modification detection
+- New file detection
+- Deleted file detection
+- File movement and rename detection
+- Real-time monitoring
+- Persistent event logging
+- Duplicate-event filtering
+- File and event counters
+- Monitoring start and stop controls
+- Normal application shutdown
 
-Modify one of the trusted files and observe the MODIFIED alert.
+## Security Concepts Demonstrated
 
-Create a new file and observe the ADDED alert.
+This project demonstrates several cybersecurity concepts, including:
 
-Rename the new file and observe the MOVED alert.
+- File integrity monitoring
+- Cryptographic hashing
+- Trusted baselines
+- Real-time security monitoring
+- Security event logging
+- Defense in depth
+- Alert filtering
+- File system event detection
 
-Delete one of the trusted files and observe the DELETED alert.
+## Limitations
 
-Run Scan Now again to compare the current state of the monitored directory against the trusted baseline.
+The application detects changes to files but does not automatically determine whether those changes are malicious.
 
-Open the Security Log to review the timestamped events recorded by the program.
+The trusted baseline is stored locally, and the current version focuses on monitoring a designated project directory rather than an entire operating system.
 
-SECURITY CONCEPTS DEMONSTRATED
+## Future Improvements
 
-This project demonstrates cryptographic hashing, file integrity verification, trusted baseline creation, real-time file system monitoring, event logging, security alerting, and defense-in-depth monitoring techniques.
+Possible future improvements include database-backed event storage, user-selected monitoring directories, desktop or email notifications, protected or digitally signed baselines, event filtering and searching, severity levels, report exporting, and packaging the application as a standalone Windows executable.
 
-TESTING STATUS
+## Project Status
 
-Version 1.0 has been tested successfully for baseline creation, clean integrity scanning, file modification detection, new file detection, file deletion detection, file movement and renaming detection, real-time monitoring, persistent event logging, event debouncing, application shutdown, and graphical interface functionality.
+**Version 1.0: Complete**
+
+The final implementation successfully combines SHA-256 integrity verification, real-time Watchdog monitoring, graphical security alerts, persistent event logging, event debouncing, and live system statistics.
